@@ -1,18 +1,9 @@
 name: integrationci
 
-on:
-  pull_request:
-    types:
-      - labeled
-  pull_request_target:
-    types:
-      - labeled
+on: workflow_dispatch
 
 jobs:
   fmtlint:
-    if: |
-      ((github.event_name == 'pull_request' && ! github.event.pull_request.head.repo.fork && github.event.pull_request.user.login != 'dependabot[bot]' && ! contains(github.event.pull_request.labels.*.name, 'safe-to-test')) ||
-      (github.event_name == 'pull_request_target' && contains(github.event.pull_request.labels.*.name, 'safe-to-test'))) && contains(github.event.pull_request.labels.*.name, 'safe-to-integrate')
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -65,9 +56,6 @@ jobs:
           - v0.144.3
         postgres-version:
           - 15
-    if: |
-      ((github.event_name == 'pull_request' && ! github.event.pull_request.head.repo.fork && github.event.pull_request.user.login != 'dependabot[bot]' && ! contains(github.event.pull_request.labels.*.name, 'safe-to-test')) ||
-      (github.event_name == 'pull_request_target' && contains(github.event.pull_request.labels.*.name, 'safe-to-test'))) && contains(github.event.pull_request.labels.*.name, 'safe-to-integrate')
     runs-on: ubuntu-latest
     steps:
       - name: checkout

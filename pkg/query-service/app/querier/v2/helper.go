@@ -282,10 +282,11 @@ func (q *querier) runBuilderQuery(
 // ValidateMetricNames function is used to print all those queries who are still using old normalized metrics and not new metrics.
 func (q *querier) ValidateMetricNames(ctx context.Context, query *v3.CompositeQuery, orgID valuer.UUID) {
 	var metricNames []string
+	p := parser.NewParser(parser.Options{})
 	switch query.QueryType {
 	case v3.QueryTypePromQL:
 		for _, query := range query.PromQueries {
-			expr, err := parser.ParseExpr(query.Query)
+			expr, err := p.ParseExpr(query.Query)
 			if err != nil {
 				q.logger.DebugContext(ctx, "error parsing promql expression", "query", query.Query, errors.Attr(err))
 				continue
